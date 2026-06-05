@@ -1,3 +1,22 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Page Not Found',
+  description: 'This page is not exist',
+  openGraph: {
+    title: 'Page Not Found',
+    description: 'This page is not exist',
+    images: [
+      {
+        url: '/404.png',
+        width: 1200,
+        height: 630,
+        alt: '404 not found page img',
+      },
+    ],
+  },
+};
+
 import css from './Home.module.css';
 
 const NotFoundPage = () => {
