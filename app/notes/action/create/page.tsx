@@ -1,6 +1,26 @@
+import { Metadata } from 'next';
 import css from './CreateNote.module.css';
 
-const CreateNote = () => {
+export const metadata: Metadata = {
+  title: 'Notehub: Create Note',
+  description: 'Creating new note',
+  openGraph: {
+    title: 'Notehub: Create Note',
+    description: 'Creating new note',
+    // дописати в посиланні маршрут створення нотатки
+    url: 'https://08-zustand-six-umber.vercel.app/',
+    images: [
+      {
+        url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'notehub img',
+      },
+    ],
+  },
+};
+
+const CreateNote = async () => {
   return (
     <main className={css.main}>
       <div className={css.container}>
