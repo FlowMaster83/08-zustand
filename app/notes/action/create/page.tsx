@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
 };
 
-const CreateNote = async () => {
+const CreateNote = () => {
   return (
     <main className={css.main}>
       <div className={css.container}>
