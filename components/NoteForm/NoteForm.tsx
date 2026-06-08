@@ -1,79 +1,32 @@
-// import { Formik, Form, Field, ErrorMessage } from 'formik';
-// import type { FormikHelpers } from 'formik';
-import type { NoteTag } from '../../types/note';
-// import * as Yup from 'yup';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createNote } from '../../lib/api';
+import { useMutation } from '@tanstack/react-query';
+import { createNote, NewNoteData } from '../../lib/api';
 import css from './NoteForm.module.css';
+import { useRouter } from 'next/navigation';
 
-interface NoteFormProps {
-  onClose: () => void;
-}
+export default function NoteForm() {
+  const router = useRouter();
 
-export interface NoteFormValues {
-  title: string;
-  content: string;
-  tag: NoteTag;
-}
-
-// const initialValues: NoteFormValues = {
-//   title: '',
-//   content: '',
-//   tag: 'Todo',
-// };
-
-// const validationSchema = Yup.object().shape({
-//   title: Yup.string()
-//     .min(3, 'Title too short')
-//     .max(50, 'Title too long')
-//     .required('Title is required'),
-//   content: Yup.string().max(500, 'Not more than 500 characters'),
-//   tag: Yup.string()
-//     .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'])
-//     .required('Tag should be one of the following values'),
-// });
-
-export default function NoteForm({ onClose }: NoteFormProps) {
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
-    },
-    onError: (error) => {
-      console.error('Error', error);
+      router.push('/notes/filter/all');
     },
   });
 
-  // const handleSubmit = (
-    // values: NoteFormValues,
-    // actions: FormikHelpers<NoteFormValues>
-  // ) => {
-  //   mutate(values, {
-  //     onSuccess: () => {
-  //       actions.resetForm();
-  //       onClose();
-  //     },
-  //   });
-  // };
+  const handleCancel = () => {
+    router.push('/notes/filter/all');
+  };
+
+  const handleSubmit = (formData: FormData) => {
+    const values = Object.fromEntries(formData) as NewNoteData;
+    mutate(values);
+  };
 
   return (
-    // <Formik
-    // initialValues={initialValues}
-    // onSubmit={handleSubmit}
-    // validationSchema={validationSchema}
-    // >
-    <form action='' className={css.form}>
+    <form action={handleSubmit} className={css.form}>
       <div className={css.formGroup}>
         <label htmlFor="title">Title</label>
         <input id="title" type="text" name="title" className={css.input} />
-        {/* <ErrorMessage
-            name="title"
-            component="span"
-            className={css.error}
-            data-name="title"
-          /> */}
       </div>
 
       <div className={css.formGroup}>
@@ -84,12 +37,6 @@ export default function NoteForm({ onClose }: NoteFormProps) {
           rows={8}
           className={css.textarea}
         />
-        {/* <ErrorMessage
-          name="content"
-          component="span"
-          className={css.error}
-          data-name="content"
-        /> */}
       </div>
 
       <div className={css.formGroup}>
@@ -101,23 +48,20 @@ export default function NoteForm({ onClose }: NoteFormProps) {
           <option value="Meeting">Meeting</option>
           <option value="Shopping">Shopping</option>
         </select>
-        {/* <ErrorMessage
-          name="tag"
-          component="span"
-          className={css.error}
-          data-name="tag"
-        /> */}
       </div>
 
       <div className={css.actions}>
-        <button onClick={onClose} type="button" className={css.cancelButton}>
+        <button
+          type="button"
+          onClick={handleCancel}
+          className={css.submitButton}
+        >
           Cancel
         </button>
-        <button type="submit" className={css.submitButton} disabled={isPending}>
-          {isPending ? 'Creating...' : 'Create note'}
+        <button type="submit" className={css.cancelButton}>
+          Create
         </button>
       </div>
     </form>
-    // </Formik>
   );
 }
