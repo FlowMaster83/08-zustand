@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const selectedTag = slug[0];
   const tag = selectedTag === 'all' ? undefined : (selectedTag as NoteTag);
 
-  const title = tag ? `Notes: ${tag}` : 'Notes';
+  const title = tag ? `Notes - ${tag}` : 'Notes - All tags';
   const description = tag ? `${tag}` : 'Notes';
 
   return {

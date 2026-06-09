@@ -17,10 +17,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const note = await fetchNoteById(id);
   return {
-    title: `Note ${note.title}`,
+    title: `${note.title}`,
     description: note.content.slice(0, 30),
     openGraph: {
-      title: `Note ${note.title}`,
+      title: `${note.title}`,
       description: note.content.slice(0, 30),
       url: `https://08-zustand-six-umber.vercel.app/notes/${id}`,
       images: [
